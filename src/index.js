@@ -13,7 +13,7 @@ const app = express();
 
 app.use(cors());
 
-// Log information about every incoming request
+
 app.use((req, res, next) => {
   const { method, path } = req;
   console.log(
