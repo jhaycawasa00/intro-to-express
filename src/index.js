@@ -2,7 +2,9 @@ const cors = require('cors');
 const express = require('express');
 const path = require('path');
 
+const auth = require('./middleware/auth.js');
 const recipeRouter = require('./routers/recipe');
+const userRouter = require('./routers/user');
 const { handleError } = require('./utils/error');
 
 const app = express();
@@ -13,7 +15,7 @@ const app = express();
 
 app.use(cors());
 
-
+// Log information about every incoming request
 app.use((req, res, next) => {
   const { method, path } = req;
   console.log(
@@ -25,6 +27,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(auth.initialize());
+
 /*
   ROUTE HANDLERS
 */
@@ -33,6 +37,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/recipes', recipeRouter);
+app.use('/api/v1/users', userRouter);
 
 app.use(handleError);
 
